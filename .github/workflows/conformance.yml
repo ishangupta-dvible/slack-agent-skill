@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Agent Portal Conformance Suite
-        uses: ishangupta-dvible/agent-portal-conformance-action@v1
+        uses: ishangupta-dvible/agent-portal-conformance-action@main
         with:
           virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}

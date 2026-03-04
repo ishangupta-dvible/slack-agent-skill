@@ -1,1 +1,7 @@
-{"name": "Slack Agent Skill", "auto_inject_telemetry": true}
+{
+    "name": "Slack Agent Skill",
+    "auto_inject_telemetry": true,
+    "declared_endpoints": [
+        "slack.com"
+    ]
+}

@@ -1,0 +1,16 @@
+name: "Agent Portal Conformance Validation"
+on:
+  workflow_dispatch:
+    inputs:
+      VT_API_KEY:
+        description: "VirusTotal API Key"
+        required: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Agent Portal Conformance Suite
+        uses: ishangupta-dvible/agent-portal-conformance-action@v1
+        with:
+          virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}

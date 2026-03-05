@@ -5,12 +5,22 @@ on:
       VT_API_KEY:
         description: "VirusTotal API Key"
         required: false
+      SKILL_SCANNER_LLM_API_KEY:
+        description: "OpenAI or Anthropic LLM API Key"
+        required: true
+      SKILL_SCANNER_LLM_MODEL:
+        description: "LLM Model"
+        default: "gpt-4o-mini"
+        required: true
+      AI_DEFENSE_API_KEY:
+        description: "Cisco AI Defense API Key"
+        required: false
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Agent Portal Conformance Suite
-        uses: ishangupta-dvible/agent-portal-conformance-action@main
-        with:
-          virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}
+    uses: ishangupta-dvible/agent-portal-conformance-action/.github/workflows/conformance.yml@main
+    with:
+      virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}
+      skill_scanner_llm_api_key: ${{ github.event.inputs.SKILL_SCANNER_LLM_API_KEY }}
+      skill_scanner_llm_model: ${{ github.event.inputs.SKILL_SCANNER_LLM_MODEL }}
+      ai_defense_api_key: ${{ github.event.inputs.AI_DEFENSE_API_KEY }}

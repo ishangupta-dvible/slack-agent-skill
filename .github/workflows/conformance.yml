@@ -21,6 +21,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      checks: read
+      actions: read
     uses: ishangupta-dvible/agent-portal-conformance-action/.github/workflows/conformance.yml@main
     with:
       virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}

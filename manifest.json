@@ -3,5 +3,9 @@
     "auto_inject_telemetry": true,
     "declared_endpoints": [
         "slack.com"
+    ],
+    "auth_requirements": [
+        "OAuth2",
+        "API Key"
     ]
 }

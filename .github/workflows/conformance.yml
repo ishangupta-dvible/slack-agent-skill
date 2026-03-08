@@ -25,6 +25,7 @@ jobs:
       actions: read
     uses: ishangupta-dvible/agent-portal-conformance-action/.github/workflows/conformance.yml@main
     with:
+      required_docs: "README.md, SKILL.md"
       virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}
       skill_scanner_llm_api_key: ${{ github.event.inputs.SKILL_SCANNER_LLM_API_KEY }}
       skill_scanner_llm_model: ${{ github.event.inputs.SKILL_SCANNER_LLM_MODEL }}

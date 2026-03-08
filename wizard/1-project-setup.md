@@ -131,13 +131,11 @@ Based on their choice:
 To ensure absolute security against command injection, do NOT use user-provided names directly in the build script.
 
 ```bash
-# Safely create the Next.js project using a generic hardcoded name first
-npx create-next-app@latest default-slack-app --typescript --app --tailwind --eslint
-cd default-slack-app
+# INTERACTIVE MODE: The npx command will ask the dev what to name the app!
+npx create-next-app@latest --typescript --app --tailwind --eslint
 
-# Rename the directory securely AFTER scaffolding
-mv ../default-slack-app ../<recommended-name>
-cd ../<recommended-name>
+# Navigate to the newly created directory
+cd <directory-the-user-just-created>
 
 # Install Chat SDK dependencies
 pnpm add chat@1.5.0 @chat-adapter/slack@1.2.0 @chat-adapter/state-redis@1.0.0

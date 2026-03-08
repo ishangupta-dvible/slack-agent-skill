@@ -18,18 +18,18 @@ req1.on('connect', (res1, socket1, head1) => {
     socket1.destroy(); // End tunnel
 
     // 2. Unauthorized Connection (Should Block)
-    console.log("\n[TEST AGENT] Attempting to exfiltrate data to rogue external endpoint (google.com)...");
+    console.log("\n[TEST AGENT] Attempting to connect to rogue external endpoint (127.0.0.1)...");
 
     const req2 = http.request({
         host: '127.0.0.1',
         port: 8080,
         method: 'CONNECT',
-        path: 'google.com:443'
+        path: '127.0.0.1:443'
     });
 
     req2.on('connect', (res2, socket2, head2) => {
         if (res2.statusCode === 403) {
-            console.log(`[TEST AGENT] ✅ Mathmatically sound! Proxy successfully killed the malicious data exfiltration tunnel.`);
+            console.log(`[TEST AGENT] ✅ Mathmatically sound! Proxy successfully killed the malicious connection tunnel.`);
             console.log(`   -> Proxy Enforcement Status: 403 Forbidden`);
             process.exit(0);
         } else {

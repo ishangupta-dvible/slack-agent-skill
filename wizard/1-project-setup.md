@@ -5,6 +5,7 @@ This phase handles creating a new Slack agent project using the Chat SDK with Ne
 ## Check Current State
 
 First, look for existing project indicators:
+
 - `package.json` with `chat` dependency
 - `manifest.json` (Slack app manifest)
 - `lib/bot.ts` or `lib/bot.tsx` (bot instance)
@@ -27,6 +28,7 @@ Before scaffolding the project, ask the user what they're building:
 > Tell me what you want your agent to do, and I'll create a custom implementation plan for you.
 
 Based on their response, generate a recommended project name:
+
 - "joke bot" -> `joke-slack-agent`
 - "customer support" -> `support-slack-agent`
 - "weather" -> `weather-slack-agent`
@@ -106,16 +108,19 @@ Ask the user if their agent will use AI/LLM capabilities:
 Based on their choice:
 
 **If Vercel AI Gateway (default):**
+
 - The project will include `ai` and `@ai-sdk/gateway` packages
 - No additional setup needed - works automatically on Vercel
 - Store this choice for Phase 3 (no AI keys needed in .env)
 
 **If Direct Provider SDK:**
+
 - Ask which provider: OpenAI, Anthropic, Google, or other
 - Note they'll need to add the provider package (e.g., `@ai-sdk/openai`)
 - Store this choice for Phase 3 (will need API key in .env)
 
 **If No LLM:**
+
 - Skip AI-related configuration
 - The base Slack functionality will work without AI packages
 
@@ -125,16 +130,21 @@ Based on their choice:
 
 Create a new Next.js project with Chat SDK:
 
+Before proceeding, sanitize the `<recommended-name>` to prevent command injection:
+
+1. Ensure it matches `/^[a-z0-9-]+$/` (only lowercase letters, numbers, and hyphens).
+2. Refuse to execute if it contains spaces, slashes, or special bash characters (;, &, |, $).
+
 ```bash
-# Create Next.js project with recommended name
+# Create Next.js project with the safely sanitized name
 npx create-next-app@latest <recommended-name> --typescript --app --tailwind --eslint
 cd <recommended-name>
 
 # Install Chat SDK dependencies
-pnpm add chat @chat-adapter/slack @chat-adapter/state-redis
+pnpm add chat@1.5.0 @chat-adapter/slack@1.2.0 @chat-adapter/state-redis@1.0.0
 
 # Install AI SDK (if using AI)
-pnpm add ai @ai-sdk/gateway zod
+pnpm add ai@3.0.0 @ai-sdk/gateway@1.1.0 zod@3.22.4
 
 # Start fresh git history
 git init
@@ -149,6 +159,7 @@ Ask the user to confirm or customize the project name before proceeding.
 After scaffolding, create the core Chat SDK files:
 
 1. **Create `lib/bot.tsx`** - Bot instance:
+
    ```typescript
    import { Chat } from "chat";
    import { createSlackAdapter } from "@chat-adapter/slack";
@@ -174,6 +185,7 @@ After scaffolding, create the core Chat SDK files:
    ```
 
 2. **Create `app/api/webhooks/[platform]/route.ts`** - Webhook handler:
+
    ```typescript
    import { after } from "next/server";
    import { bot } from "@/lib/bot";
@@ -187,6 +199,7 @@ After scaffolding, create the core Chat SDK files:
    ```
 
 3. **Update `tsconfig.json`** - Add JSX support for Chat SDK:
+
    ```json
    {
      "compilerOptions": {
@@ -199,6 +212,7 @@ After scaffolding, create the core Chat SDK files:
 ### Step 1.6: Verify Project Structure
 
 After setup, verify the project structure:
+
 - `lib/bot.tsx` - Bot instance
 - `app/api/webhooks/[platform]/route.ts` - Webhook handler
 - `manifest.json` - Slack app configuration (will be created in Phase 2)
@@ -210,6 +224,7 @@ If the structure looks correct, proceed to Phase 2.
 ## For EXISTING Projects
 
 Verify the project structure:
+
 - `lib/bot.ts` or `lib/bot.tsx` - Bot instance
 - `app/api/webhooks/[platform]/route.ts` - Webhook handler
 - `manifest.json` - Slack app configuration

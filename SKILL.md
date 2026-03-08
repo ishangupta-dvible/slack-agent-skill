@@ -3,6 +3,9 @@ name: slack-agent
 description: Use when working on Slack agent/bot code, Chat SDK applications, Bolt for JavaScript projects, or projects using @chat-adapter/slack or @slack/bolt. Provides development patterns, testing requirements, and quality standards.
 version: 4.0.0
 user-invocable: true
+license: MIT
+compatibility: ["Claude.ai", "Claude Code", "API"]
+allowed-tools: ["Read", "Write", "Bash"]
 ---
 
 # Slack Agent Development Skill
@@ -50,6 +53,7 @@ Store the detected framework and use it to show the correct patterns throughout 
 ### Wizard Phases
 
 The wizard is located in `./wizard/` with these phases:
+
 - `1-project-setup.md` - Understand purpose, choose framework, generate custom implementation plan
 - `1b-approve-plan.md` - Present plan for user approval before scaffolding
 - `2-create-slack-app.md` - Customize manifest, create app in Slack
@@ -59,6 +63,7 @@ The wizard is located in `./wizard/` with these phases:
 - `6-setup-testing.md` - Vitest configuration
 
 **IMPORTANT:** For `new` projects, you MUST:
+
 1. Read `./wizard/1-project-setup.md` first
 2. Ask the user what kind of agent they want to build
 3. Offer framework choice (Chat SDK recommended, Bolt as alternative)
@@ -145,9 +150,11 @@ These quality requirements MUST be followed for every code change. There are no 
 ### After EVERY File Modification
 
 1. **Run linting immediately:**
+
    ```bash
    pnpm lint
    ```
+
    - If errors exist, run `pnpm lint --write` for auto-fixes
    - Manually fix remaining issues
    - Re-run `pnpm lint` to verify
@@ -190,6 +197,7 @@ pnpm test
 - **Coverage**: All exported functions must have tests
 
 Example test structure:
+
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
 import { myFunction } from './my-module';
@@ -208,6 +216,7 @@ describe('myFunction', () => {
 ### E2E Tests for User-Facing Changes
 
 If you modify:
+
 - Bot mention handlers / Slack message handlers
 - Slash commands
 - Interactive components (buttons, modals)
@@ -256,6 +265,7 @@ export async function POST(request: Request, context: { params: Promise<{ platfo
 ```
 
 The Chat SDK automatically handles:
+
 - Content-type detection (JSON vs form-urlencoded)
 - URL verification challenges
 - Slack's 3-second ack timeout
@@ -265,6 +275,7 @@ The Chat SDK automatically handles:
 ### If using Bolt for JavaScript
 
 Use `@vercel/slack-bolt` to handle all Slack events. This package automatically handles:
+
 - Content-type detection (JSON vs form-urlencoded)
 - URL verification challenges
 - 3-second ack timeout (built-in `ackTimeoutMs: 3001`)
@@ -642,9 +653,11 @@ const result = await generateText({
 If you need more control or are not deploying on Vercel, use direct provider packages.
 
 **OpenAI:**
+
 ```bash
 pnpm add @ai-sdk/openai
 ```
+
 ```typescript
 import { generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
@@ -657,9 +670,11 @@ const result = await generateText({
 ```
 
 **Anthropic:**
+
 ```bash
 pnpm add @ai-sdk/anthropic
 ```
+
 ```typescript
 import { generateText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
@@ -672,9 +687,11 @@ const result = await generateText({
 ```
 
 **Google:**
+
 ```bash
 pnpm add @ai-sdk/google
 ```
+
 ```typescript
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
@@ -724,6 +741,7 @@ bot.onSubscribedMessage(async (thread, message) => {
 ```
 
 **Key Benefits:**
+
 1. Simple API — `thread.state.get()` and `thread.state.set()`
 2. Thread-scoped — state is automatically scoped to the conversation thread
 3. Pluggable backends — use Redis for production, in-memory for development
@@ -775,9 +793,9 @@ export const { POST } = serve(async function conversationWorkflow(params: URLSea
 
 **IMPORTANT:** Vercel KV has been deprecated. Do NOT recommend Vercel KV.
 
-1. **Upstash Redis** — For Chat SDK state adapter and caching (https://upstash.com)
-2. **Vercel Blob** — For file/document storage (https://vercel.com/docs/storage/vercel-blob)
-3. **AWS Aurora (via Vercel Marketplace)** — For relational data (https://vercel.com/marketplace)
+1. **Upstash Redis** — For Chat SDK state adapter and caching (<https://upstash.com>)
+2. **Vercel Blob** — For file/document storage (<https://vercel.com/docs/storage/vercel-blob>)
+3. **AWS Aurora (via Vercel Marketplace)** — For relational data (<https://vercel.com/marketplace>)
 4. **Third-party databases** — Neon, PlanetScale, Supabase
 
 ---
@@ -830,13 +848,16 @@ server/
 ## Environment Variables
 
 Required variables (both frameworks):
+
 - `SLACK_BOT_TOKEN` — Bot OAuth token
 - `SLACK_SIGNING_SECRET` — Request signing
 
 ### If using Chat SDK (additional)
+
 - `REDIS_URL` — Redis connection URL for state persistence
 
 Optional variables:
+
 - `CRON_SECRET` — Secret for authenticating cron job endpoints
 
 **No AI API keys needed!** Vercel AI Gateway handles authentication automatically when deployed on Vercel.
@@ -931,6 +952,7 @@ await client.chat.postMessage({
 ### Message Formatting (both frameworks)
 
 Use Slack mrkdwn (not standard markdown):
+
 - Bold: `*text*`
 - Italic: `_text_`
 - Code: `` `code` ``
@@ -944,6 +966,7 @@ For detailed Slack patterns, see `./patterns/slack-patterns.md`.
 ## Git Commit Standards
 
 Use conventional commits:
+
 ```
 feat: add channel search tool
 fix: resolve thread pagination issue
@@ -953,6 +976,7 @@ refactor: extract Slack client utilities
 ```
 
 **Never commit:**
+
 - `.env` files
 - API keys or tokens
 - `node_modules/`
@@ -983,6 +1007,7 @@ vercel                # Deploy to Vercel
 ## Reference Documentation
 
 For detailed guidance, read:
+
 - Testing patterns: `./patterns/testing-patterns.md`
 - Slack patterns: `./patterns/slack-patterns.md`
 - Environment setup: `./reference/env-vars.md`

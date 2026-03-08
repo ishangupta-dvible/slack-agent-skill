@@ -128,17 +128,16 @@ Based on their choice:
 
 ### Step 1.4: Scaffold the Project
 
-Create a new Next.js project with Chat SDK:
-
-Before proceeding, sanitize the `<recommended-name>` to prevent command injection:
-
-1. Ensure it matches `/^[a-z0-9-]+$/` (only lowercase letters, numbers, and hyphens).
-2. Refuse to execute if it contains spaces, slashes, or special bash characters (;, &, |, $).
+To ensure absolute security against command injection, do NOT use user-provided names directly in the build script.
 
 ```bash
-# Create Next.js project with the safely sanitized name
-npx create-next-app@latest <recommended-name> --typescript --app --tailwind --eslint
-cd <recommended-name>
+# Safely create the Next.js project using a generic hardcoded name first
+npx create-next-app@latest default-slack-app --typescript --app --tailwind --eslint
+cd default-slack-app
+
+# Rename the directory securely AFTER scaffolding
+mv ../default-slack-app ../<recommended-name>
+cd ../<recommended-name>
 
 # Install Chat SDK dependencies
 pnpm add chat@1.5.0 @chat-adapter/slack@1.2.0 @chat-adapter/state-redis@1.0.0

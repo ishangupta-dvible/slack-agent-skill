@@ -2,6 +2,9 @@ name: "Agent Portal Conformance Validation"
 on:
   workflow_dispatch:
     inputs:
+      artifact_id:
+        description: "Agent Portal Artifact UUID"
+        required: true
       VT_API_KEY:
         description: "VirusTotal API Key"
         required: false
@@ -25,6 +28,7 @@ jobs:
       actions: read
     uses: ishangupta-dvible/agent-portal-conformance-action/.github/workflows/conformance.yml@main
     with:
+      artifact_id: ${{ github.event.inputs.artifact_id }}
       required_docs: "README.md, SKILL.md"
       virustotal_api_key: ${{ github.event.inputs.VT_API_KEY }}
       skill_scanner_llm_api_key: ${{ github.event.inputs.SKILL_SCANNER_LLM_API_KEY }}
